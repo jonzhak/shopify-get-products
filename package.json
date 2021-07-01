@@ -9,7 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "request": "^2.88.2",
+    "shopify-gid": "^1.0.1"
+  },
   "devDependencies": {
     "graphql": "^14.7.0",
     "graphql-request": "^3.4.0"

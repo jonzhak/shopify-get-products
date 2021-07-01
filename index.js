@@ -1,86 +1,42 @@
-// import { request, gql } from "graphql-request";
-const { request, gql, GraphQLClient } = require("graphql-request");
+const getAbandonedCart = require("./cartAbandonement").getAbandonedCart;
+const {
+  retireveCollections,
+  createCheckout,
+  queryProductVariants,
+  retireveProducts,
+  getProductsByCollectionHandle,
+  retireveVariantsOfProduct,
+} = require("./storefrontAPI");
 
-const query1 = gql`
-  {
-    product(id: "gid://shopify/Product/6718176329924") {
-      id
-      legacyResourceId
-      title
-      collections(first: 5) {
-        edges {
-          node {
-            description
-            handle
-          }
-        }
-      }
-    }
-  }
-`;
+const storeAPIkey = "0f6b58da9331414de7ed1d948c67ac35";
+const storePassword = "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";
+const accessToken = "0386d977a264448a1b62c295ac542a0d";
+const storeMyShopify = "fat-cat-studio.myshopify.com";
 
-const getCollections = () => {
-  const query2 = gql`
-    {
-      collections(first: 250) {
-        edges {
-          node {
-            id
-            handle
-            title
-            description
-            productsCount
-          }
-        }
-      }
-    }
-  `;
+//const { encode, decode } = require("shopify-gid");
 
-  return request(
-    "https://4d6b2a9b76b015bcda0315a8c3d820be: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@monte-carlo-designs.myshopify.com/admin/api/2021-04/graphql.json",
-    query2
-  ).then((data) => {
-    const arr = data.collections.edges.map((item) => item.node.handle);
-    arr.forEach((element) => {
-      getProducts(element);
-    });
-  });
-};
-getCollections();
-const getProducts = (handle) => {
-  const query3 = gql`
-    {
-      collectionByHandle(handle: "${handle}") {
-        products(first: 5) {
-          edges { 
-            node {
-              id
-              title
-              description
-              tags
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  return request(
-    "https://4d6b2a9b76b015bcda0315a8c3d820be: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@monte-carlo-designs.myshopify.com/admin/api/2021-04/graphql.json",
-    query3
-  ).then((data) => console.log("\n", JSON.stringify(data)));
-};
+//note we cheated heree get productvariant kept throwig syntax error so we used shopify graphql app to do this query
 
 /*
-
-{"collections":
-{
-    "edges":
-[
-{"node":{"id":"gid://shopify/Collection/270126776516","handle":"frontpage","title":"Home page","description":"","productsCount":1}},
-{"node":{"id":"gid://shopify/Collection/270207418564","handle":"american-watches","title":"american watches","description":"","productsCount":6}},
-{"node":{"id":"gid://shopify/Collection/270207484100","handle":"european-watches","title":"european watches","description":"","productsCount":2}}
-]
-}
-}
+getAbandonedCart(
+  storeAPIkey,
+  storePassword,
+  storeMyShopify
+).then((data) => console.log(JSON.stringify(data)));
 */
+/*
+const encodedVal = encode("Product", variantIdShort, {
+  accessToken: accessToken,
+});
+*/
+
+//console.log(encodedVal);
+const handle = "winter";
+const productID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzY3NzM1MDczOTE2Nzk=";
+const variantID =
+  "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC80MDEyMTM0MTg3MDI3MQ==";
+
+//retireveCollections(storeMyShopify, accessToken);
+//getProductsByCollectionHandle(storeMyShopify, accessToken, handle);
+//retireveVariantsOfProduct(storeMyShopify, accessToken, productID);
+createCheckout(storeMyShopify, accessToken, variantID);
