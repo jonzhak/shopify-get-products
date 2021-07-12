@@ -156,6 +156,37 @@ const createCheckout = async (storeMyShopify, accessToken, variantId) => {
   console.log(JSON.stringify(data, undefined, 2));
 };
 
+const retireveCheckouts = async (storeMyShopify, accessToken) => {
+  const endpoint = `https://${storeMyShopify}/api/2021-04/graphql.json`;
+
+  const graphQLClient = new GraphQLClient(endpoint, {
+    headers: {
+      "X-Shopify-Storefront-Access-Token": accessToken,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const query = gql`
+    {
+      node(id: "${productID}") {
+        id
+        ... on Product {
+          variants(first: 5) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const data = await graphQLClient.request(query);
+
+  console.log(JSON.stringify(data));
+};
+
 exports.retireveCollections = retireveCollections;
 
 exports.retireveProducts = retireveProducts;

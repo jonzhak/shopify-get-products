@@ -11,7 +11,7 @@ async function getAbandonedCart(
   const url_checkouts = `https://${storeAPIkey}:${storePassword}@${storeMyShopify}/admin/api/${apiVersion}/checkouts.json`;
 
   return axios
-    .post(url_checkouts, {
+    .get(url_checkouts, {
       headers: {
         "Content-Type": "application/json",
       },

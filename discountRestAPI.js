@@ -75,7 +75,7 @@ async function shopifyDiscountCreate(
     .then(function (response) {
       console.log(response);
       const discounted_url = `http://${storeMyShopify}/discount/${random_string}`;
-      console.log("test link is: ", discounted_url);
+      console.log('test link is: ', discounted_url)
       return response;
     })
     .catch(function (error) {
