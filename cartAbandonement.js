@@ -1,24 +1,31 @@
-const request = require("request");
+"use strict";
+const axios = require("axios");
 
-const getAbandonedCart = (storeAPIkey, storePassword, storeMyShopify) => {
-  return new Promise(function (resolve, reject) {
-    var options = {
-      method: "GET",
-      url: `https://${storeAPIkey}:${storePassword}@${storeMyShopify}/admin/api/2021-04/checkouts.json`,
+async function getAbandonedCart(
+  storeMyShopify,
+  apiVersion,
+  storeAPIkey,
+  storePassword,
+  created_at_min
+) {
+  const url_checkouts = `https://${storeAPIkey}:${storePassword}@${storeMyShopify}/admin/api/${apiVersion}/checkouts.json`;
+
+  return axios
+    .post(url_checkouts, {
       headers: {
         "Content-Type": "application/json",
-        //"X-Shopify-Access-Token": accessToken,
       },
-    };
-    request(options, function (error, _, body) {
-      if (error) {
-        console.log("error occured", error);
-        return "";
-      }
-      var jsonBody = JSON.parse(body);
-      resolve(jsonBody);
+    })
+    .then(function (response) {
+      console.log(response);
+      return response;
+    })
+    .catch(function (error) {
+      // handle error
+      console.log("@@@@@@@@@@ERROR at getAbandonedCart:   ", error);
+      return false;
     });
-  });
-};
+}
+
 exports.getAbandonedCart = getAbandonedCart;
 module.exports = exports;
